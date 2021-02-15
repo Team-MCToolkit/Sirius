@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="mctoolkit">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/mctoolkit.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
