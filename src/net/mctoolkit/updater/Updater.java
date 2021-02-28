@@ -1,40 +1,72 @@
 package net.mctoolkit.updater;
 
-import net.mcreator.io.OS;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 public class Updater {
 
+    public static Updater INSTANCE;
+    private JProgressBar bar;
+    private JProgressBar bar2;
+
     public Updater(String version) {
-        String osName;
-        String extension;
-        if(OS.getOS() == OS.WINDOWS) {
-            osName = "Windows";
-            extension = ".zip";
-            if(OS.getSystemBits() == OS.BIT32){
-                osName = osName + "32";
-            } else if(OS.getSystemBits() == OS.BIT64) {
-                osName = osName + ".64bit";
-            }
-        } else if(OS.getOS() == OS.MAC) {
-            osName = "mac";
-            extension = ".dmg";
-        } else {
-            osName = "linux";
-            extension = ".tar.gz";
-            if(OS.getSystemBits() == OS.BIT32){
-                osName = osName + "32";
-            } else if(OS.getSystemBits() == OS.BIT64) {
-                osName = osName + "64";
-            }
+        INSTANCE = this;
+
+        String url = "https://github.com/Team-MCToolkit/MCToolkit-Web-API/releases/download/MCToolkit/MCToolkit" + version + ".zip";
+        String dest = System.getProperty("user.dir") + File.separator + "mctoolkit.zip";
+
+        JFrame frame = createJFrame();
+        try {
+            bar = new JProgressBar(JProgressBar.HORIZONTAL, 0, new URL(url).openConnection().getContentLength());
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
+        bar.setValue(0);
+        bar.setStringPainted(true);
+        frame.add(bar);
+        frame.setVisible(true);
+        frame.setTitle("Downloading...");
+        FileUtils.downloadFile(url, dest);
 
-        String url = "https://github.com/Team-MCToolkit/MCToolkit-Web-API/releases/download/test/MCToolkit." + version + "." + osName + extension;
-        String destFile = System.getProperty("user.dir") + File.separator + "mctoolkit" + extension;
+        File zipFile = new File(dest);
+        File destFile = new File(dest.replace("mctoolkit.zip", ""));
+        frame.setTitle("Unzipping...");
 
-        FileUtils.downloadFile(url, destFile);
-        FileUtils.unzip(destFile, destFile.replace("mctoolkit" + extension, ""));
-        File file= new File(destFile);
-        file.delete();
+        bar2 = new JProgressBar(JProgressBar.HORIZONTAL, 0, (int) (zipFile.length() / (1024 * 1024)));
+        bar2.setValue(0);
+        bar2.setStringPainted(true);
+        bar.setVisible(false);
+        frame.add(bar2);
+        FileUtils.unzip(dest, destFile);
+        zipFile.delete();
+        String[] options = {"Close"};
+        int option = JOptionPane.showOptionDialog(frame,
+                "The installation is completed." + "\nPlease restart MCToolkit to apply changes.",
+                "Installation completed", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
+                options, options[0]);
+        if (option == 0)
+            System.exit(0);
+    }
+
+    private static JFrame createJFrame() {
+        JFrame frame = new JFrame();
+        frame.setResizable(false);
+        frame.setSize(new Dimension(330, 87));
+        frame.setLocationRelativeTo(null);
+        frame.setCursor(Cursor.WAIT_CURSOR);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        return frame;
+    }
+
+    public JProgressBar getBar() {
+        return bar;
+    }
+
+    public JProgressBar getBar2() {
+        return bar2;
     }
 }
