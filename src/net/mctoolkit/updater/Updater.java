@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 
 public class Updater {
 
@@ -12,15 +11,14 @@ public class Updater {
     private JProgressBar bar;
     private JProgressBar bar2;
 
-    public Updater(String version) {
+    public Updater(UpdaterInfo info) {
         INSTANCE = this;
 
-        String url = "https://github.com/Team-MCToolkit/MCToolkit-Web-API/releases/download/MCToolkit/MCToolkit" + version + ".zip";
-        String dest = System.getProperty("user.dir") + File.separator + "mctoolkit.zip";
+        String dest = info.getDestFile().getPath();
 
         JFrame frame = createJFrame();
         try {
-            bar = new JProgressBar(JProgressBar.HORIZONTAL, 0, new URL(url).openConnection().getContentLength());
+            bar = new JProgressBar(JProgressBar.HORIZONTAL, 0, info.getUrl().openConnection().getContentLength());
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -29,10 +27,10 @@ public class Updater {
         frame.add(bar);
         frame.setVisible(true);
         frame.setTitle("Downloading...");
-        FileUtils.downloadFile(url, dest);
+        FileUtils.downloadFile(info.getUrl(), new File(dest));
 
         File zipFile = new File(dest);
-        File destFile = new File(dest.replace("mctoolkit.zip", ""));
+        File destFile = new File(dest.replace(info.getNameZip() + ".zip", ""));
         frame.setTitle("Unzipping...");
 
         bar2 = new JProgressBar(JProgressBar.HORIZONTAL, 0, (int) (zipFile.length() / (1024 * 1024)));
@@ -44,7 +42,7 @@ public class Updater {
         zipFile.delete();
         String[] options = {"Close"};
         int option = JOptionPane.showOptionDialog(frame,
-                "The installation is completed." + "\nPlease restart MCToolkit to apply changes.",
+                "The installation is completed." + "\nPlease restart " + info.getAppName() + " to apply changes.",
                 "Installation completed", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null,
                 options, options[0]);
         if (option == 0)
@@ -60,6 +58,10 @@ public class Updater {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         return frame;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new File(System.getProperty("user.dir") + "/test/hello.json").getPath());
     }
 
     public JProgressBar getBar() {

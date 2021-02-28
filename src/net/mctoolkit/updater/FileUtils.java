@@ -1,12 +1,9 @@
 package net.mctoolkit.updater;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,14 +13,8 @@ import java.util.zip.ZipInputStream;
 
 public class FileUtils {
 
-    public static void downloadFile(String urlString, String destFile) {
+    public static void downloadFile(URL url, File destFile) {
         BufferedInputStream in;
-        URL url = null;
-        try {
-            url = new URL(urlString);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
         try {
             in = new BufferedInputStream(url.openStream());
             FileOutputStream output = new FileOutputStream(destFile);
