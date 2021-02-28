@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MCToolkit Updater.iml" filepath="$PROJECT_DIR$/MCToolkit Updater.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sirius.iml" filepath="$PROJECT_DIR$/Sirius.iml" />
     </modules>
   </component>
 </project>

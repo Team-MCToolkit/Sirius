@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="Auto Updater">
-    <output-path>$PROJECT_DIR$/out/artifacts/Auto_Updater</output-path>
-    <root id="archive" name="auto-updater.jar">
-      <element id="module-output" name="MCToolkit Updater" />
-    </root>
-  </artifact>
-</component>
