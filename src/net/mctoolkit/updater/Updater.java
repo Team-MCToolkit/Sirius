@@ -60,10 +60,6 @@ public class Updater {
         return frame;
     }
 
-    public static void main(String[] args) {
-        System.out.println(new File(System.getProperty("user.dir") + "/test/hello.json").getPath());
-    }
-
     public JProgressBar getBar() {
         return bar;
     }
