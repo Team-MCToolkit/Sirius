@@ -22,13 +22,13 @@ public class UpdaterInfo {
 
     private final String appName;
     private final URL url;
-    private final File destFile;
+    private final File destFolder;
     private final String nameZip;
 
     public UpdaterInfo(String appName, URL url, File destFile, String nameZip) {
         this.appName = appName;
         this.url = url;
-        this.destFile = destFile;
+        this.destFolder = destFile;
         this.nameZip = nameZip;
     }
 
@@ -40,8 +40,8 @@ public class UpdaterInfo {
         return url;
     }
 
-    public File getDestFile() {
-        return destFile;
+    public File getDestFolder() {
+        return destFolder;
     }
 
     public String getNameZip() {

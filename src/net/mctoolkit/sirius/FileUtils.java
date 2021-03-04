@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -43,27 +44,29 @@ public class FileUtils {
             output.close();
         } catch (IOException exception) {
             exception.printStackTrace();
+            System.exit(-1);
         }
     }
 
-    public static void unzip(String strZipFile, File dst) {
-        Path extractFolder = dst.toPath();
+    public static void unzip(String strZipFile, File dest, String zipName) {
+        Path extractFolder = dest.toPath();
         try (ZipInputStream zipInputStream = new ZipInputStream(Files.newInputStream(new File(strZipFile).toPath()))) {
             ZipEntry entry;
             int current = 0;
+            String extract = extractFolder.toString().replace(zipName, "");
             while ((entry = zipInputStream.getNextEntry()) != null) {
-                Path toPath = extractFolder.resolve(entry.getName());
+                Path toPath = Paths.get(extract + entry.toString());
                 current += entry.getCompressedSize();
                 Updater.INSTANCE.getBar2().setValue(current / (1024 * 1024));
-                if (entry.isDirectory()) {
+                if (!new File(entry.toString()).isFile()) {
                     toPath.toFile().mkdirs();
                 } else {
-                    toPath.toFile().getParentFile().mkdirs();
                     Files.copy(zipInputStream, toPath, StandardCopyOption.REPLACE_EXISTING);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
     }
 }
