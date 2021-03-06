@@ -15,4 +15,4 @@ Big thanks to [all the people](https://github.com/Team-MCToolkit/Sirius/graphs/c
 
 ## License and trademark
 
-Sirius is licensed under the Apache License 2.0 if not otherwise stated in source files or other files of this project. Copyright 20201 MCToolkit and [contributors](https://github.com/Team-MCToolkit/Sirius/graphs/contributors).
+Sirius is licensed under the Apache License 2.0 if not otherwise stated in source files or other files of this project. Copyright 2021 MCToolkit and [contributors](https://github.com/Team-MCToolkit/Sirius/graphs/contributors).
